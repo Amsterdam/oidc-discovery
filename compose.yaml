@@ -1,0 +1,44 @@
+services:
+  oidc-discovery:
+    image: amsterdam/oidc-discovery
+    build:
+      context: .
+      dockerfile: Containerfile
+      args:
+        PYTHON_VERSION: "3.11"
+    volumes:
+      - ".:/app:rw,Z"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./uv.lock
+    depends_on:
+      keycloak:
+        condition: service_healthy
+  keycloak:
+    build:
+      context: keycloak
+      dockerfile: Containerfile
+    image: amsterdam/oidc-discovery-keycloak:latest
+    command:
+      - "/opt/keycloak/bin/kc.sh"
+      - "start-dev"
+      - "--http-port"
+      - "8002"
+      - "--health-enabled"
+      - "true"
+      - "--http-management-port"
+      - "8003"
+    ports:
+      - "8002:8002"
+    volumes:
+      - "./keycloak/import:/import"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    healthcheck:
+      test: ["CMD", "curl", "--head", "-fsS", "http://localhost:8003/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
