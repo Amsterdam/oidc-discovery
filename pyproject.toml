@@ -1,7 +1,7 @@
 [project]
 name = "oidc-discovery"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.1.1"
+description = "Client to retrieve OP Metadata using OIDC Discovery"
 readme = "README.md"
 authors = [
     { name = "Youri Westerman", email = "y.westerman@amsterdam.nl" }
