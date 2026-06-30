@@ -58,7 +58,7 @@ class OIDCProviderMetadata(BaseModel):
     parameter is used, although those defined in [OpenID.Core] SHOULD be listed, if
     supported."""
 
-    response_types_supported: list[StrictStr] = None
+    response_types_supported: list[StrictStr]
     """REQUIRED. JSON array containing a list of the OAuth 2.0 response_type values
     that this OP supports. Dynamic OpenID Providers MUST support the code, id_token,
     and the id_token token Response Type values."""
@@ -79,11 +79,11 @@ class OIDCProviderMetadata(BaseModel):
     """OPTIONAL. JSON array containing a list of the Authentication Context Class
     References that this OP supports."""
 
-    subject_types_supported: list[StrictStr] = None
+    subject_types_supported: list[StrictStr]
     """REQUIRED. JSON array containing a list of the Subject Identifier types that this
     OP supports. Valid types include pairwise and public."""
 
-    id_token_signing_alg_values_supported: list[StrictStr] = None
+    id_token_signing_alg_values_supported: list[StrictStr]
     """REQUIRED. JSON array containing a list of the JWS signing algorithms
     (alg values) supported by the OP for the ID Token to encode the Claims in a JWT
     [JWT]. The algorithm RS256 MUST be included. The value none MAY be supported but
@@ -213,3 +213,10 @@ class OIDCProviderMetadata(BaseModel):
     Client to read about the OpenID Provider's terms of service. The registration
     process SHOULD display this URL to the person registering the Client if it is
     given."""
+
+    end_session_endpoint: Optional[AnyHttpUrl] = None
+    """https://openid.net/specs/openid-connect-rpinitiated-1_0.html#OPMetadata
+    REQUIRED. URL at the OP to which an RP can perform a redirect to request that the
+    End-User be logged out at the OP. This URL MUST use the https scheme and MAY
+    contain port, path, and query parameter components.
+    It is optional here, because OPs may or not may not support this specification."""
