@@ -29,6 +29,7 @@ dev = [
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
+    "CPY001",
     "D100",
     "D101",
     "D102",
